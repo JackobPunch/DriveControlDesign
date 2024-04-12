@@ -1,0 +1,554 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>projekt</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-03-20"><meta name="DC.source" content="projekt.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">Dane wej&#347;&#8250;ciowe</a></li><li><a href="#3">Obliczenie transmitancji</a></li><li><a href="#4">Nastawy regulatora pr&#261;du</a></li><li><a href="#5">Nastawy regulatora pr&#281;dko&#347;ci PI</a></li><li><a href="#6">Rozruch bez momentu obci&#261;&#380;enia i obci&#261;&#380;enie udarowe(stabilizacja)</a></li><li><a href="#7">Rozruch ze znamionowym momentem czynnym</a></li><li><a href="#8">Rozruch ze znamionowym momentem biernym</a></li><li><a href="#9">Zapas fazy i modu&#322;u</a></li></ul></div><pre class="codeinput">clear <span class="string">all</span>; close <span class="string">all</span>
+</pre><h2 id="2">Dane wej&#347;&#8250;ciowe</h2><pre class="codeinput">Pn = 17e3; <span class="comment">% Moc znamionowa</span>
+Un = 220;  <span class="comment">% Znamionowe napiecie zasilania</span>
+In = 88;   <span class="comment">% Prad znamionowy</span>
+nn = 1500; <span class="comment">% Znamionowa predkosc obrotowa</span>
+Rt = 0.15; <span class="comment">% Rezystancja uogolniona</span>
+Lt = 18.75e-3; <span class="comment">% Indukcyjnosc</span>
+Js = 0.275; <span class="comment">% Moment bezwladnosci wirnika</span>
+
+L = Lt; <span class="comment">% Indukcyjnosc calkowita</span>
+R = Rt; <span class="comment">% Rezystancja uogolniona</span>
+J = 22*Js; <span class="comment">% Moment bezwladnosci silnika i agregatu</span>
+
+wn = 2*pi*nn/60;
+
+lambda_n = 2; <span class="comment">% Stala ograniczajaca prad</span>
+p = 50; <span class="comment">% Dopuszczalna krotnosc pradu</span>
+Beta = lambda_n/p; <span class="comment">% Stala czasowa przebiegu pradu twornika</span>
+
+psi_e = (Un-In*R)/wn; <span class="comment">% znamionowy strumie&#271;&#380;&#733; skojarzony rotacyjnie z uzwojeniem tworika</span>
+
+B = J*R/(psi_e^2); <span class="comment">% sta&#271;&#380;&#733;a elektromechaniczna nap&#271;&#380;&#733;du</span>
+T = L/R; <span class="comment">% elektromagnetyczna sta&#271;&#380;&#733;a czasowa</span>
+Tm = 0; <span class="comment">% sta&#322;a czasowa obwodu wzbudzenia</span>
+
+Mn=psi_e*In;  <span class="comment">% Moment znamionowy</span>
+Mm=Mn; <span class="comment">% Moment mechaniczny</span>
+Mb=Mn*sign(wn);
+
+<span class="comment">%Sprawdzanie warunku B &gt; 4T</span>
+<span class="keyword">if</span> B &gt; 4*T
+    disp(<span class="string">'Ok'</span>)
+<span class="keyword">else</span>
+    disp(<span class="string">'Zle'</span>)
+<span class="keyword">end</span>
+</pre><pre class="codeoutput">Ok
+</pre><h2 id="3">Obliczenie transmitancji</h2><pre class="codeinput">G_wU = tf([0 0 1/psi_e],[B*T B 1]);
+G_wM = tf([0 Rt/(psi_e^2)*T Rt/(psi_e^2)],[B*T B 1]);
+G_IU = tf([0 B/Rt 0],[B*T B 1]);
+G_IM = tf([0 0 1/psi_e],[B*T B 1]);
+
+sim(<span class="string">'pkt1.slx'</span>)
+
+wn_wektor=ones(1,length(dane.time))*wn; <span class="comment">% ograniczenie pr&#281;dko&#347;ci</span>
+In_wektor=ones(1, length(dane.time))*In; <span class="comment">% ograniczenie pr&#261;du</span>
+Un_wektor=ones(1,length(dane.time))*Un; <span class="comment">% ograniczenie napi&#281;cia</span>
+
+figure; plot(dane.time, dane.signals.values(:,1),dane.time, wn_wektor,<span class="string">'--'</span>)
+title(<span class="string">'Pr&#281;dko&#347;&#263; k&#261;towa'</span>); xlabel(<span class="string">'Czas [s]'</span>); ylabel(<span class="string">'\omega[rad/s]'</span>); grid <span class="string">on</span>;
+legend(<span class="string">'Pr&#281;dko&#347;&#263; k&#261;towa'</span>, <span class="string">'Ograniczenie'</span>)
+
+
+figure; plot(dane.time, dane.signals.values(:,2))
+title(<span class="string">'Przebieg pochodnej pr&#261;du twornika'</span>); xlabel(<span class="string">'Czas [s]'</span>); ylabel(<span class="string">'\omega[rad/s]'</span>); grid <span class="string">on</span>;
+
+
+figure; plot(dane.time, dane.signals.values(:,3),dane.time, In_wektor,<span class="string">'--'</span>);
+title(<span class="string">'Przebieg pr&#261;du twornika'</span>); xlabel(<span class="string">'Czas [s]'</span>); ylabel(<span class="string">'\omega[rad/s]'</span>); grid <span class="string">on</span>;
+legend(<span class="string">'Pr&#261;d twornika'</span>, <span class="string">'Ograniczenie'</span>)
+</pre><img vspace="5" hspace="5" src="projekt_01.png" alt=""> <img vspace="5" hspace="5" src="projekt_02.png" alt=""> <img vspace="5" hspace="5" src="projekt_03.png" alt=""> <h2 id="4">Nastawy regulatora pr&#261;du</h2><pre class="codeinput"><span class="comment">%Beta = lambda_n/p;</span>
+
+Y=10/(2.5*In);
+Kt=10/(1.2*wn);
+wz=wn*Kt;
+Kp=1.5*Un/10;
+T1=0.5*B*(1-sqrt(1-4*T/B));
+B1=B-T1;
+kz=(B1-Beta)/(Y*B1);
+m=T1;
+V=Beta*Y*Kp*B/((B1-Beta)*Rt);
+Uz0=lambda_n*In*Y*B1/(B1-Beta);
+</pre><h2 id="5">Nastawy regulatora pr&#281;dko&#347;ci PI</h2><pre class="codeinput">TR=4*Beta;
+Kw=J/(2*Kt*kz*Beta*psi_e);
+</pre><h2 id="6">Rozruch bez momentu obci&#261;&#380;enia i obci&#261;&#380;enie udarowe(stabilizacja)</h2><pre class="codeinput">sim(<span class="string">'moment_udarowy.slx'</span>)
+
+wn_wektor=ones(1,length(omega.time))*wn; <span class="comment">% ograniczenie pr&#281;dko&#347;ci</span>
+In_wektor=ones(1, length(Is.time))*In; <span class="comment">% ograniczenie pr&#261;du</span>
+Un_wektor=ones(1,length(Us.time))*Un; <span class="comment">% ograniczenie napi&#281;cia</span>
+
+<span class="comment">% Przebieg napi&#281;&#263;ia</span>
+f=figure;
+set(f,<span class="string">'name'</span>,<span class="string">'Rozruch bez momentu obci&#261;&#380;eniia i obci&#261;&#380;enie udarowe(stabilizacja)'</span>)
+subplot(311)
+plot(Us.time(:,1), Us.signals.values(:,1), Us.time, Un_wektor,<span class="string">'--'</span>);
+title(<span class="string">'Przebieg napi&#281;cia'</span>)
+xlabel(<span class="string">'Czas [s]'</span>)
+ylabel(<span class="string">'Napi&#281;cie [V]'</span>)
+legend(<span class="string">'Napi&#281;cie'</span>, <span class="string">'Ograniczenie'</span>)
+grid <span class="string">on</span>;
+
+<span class="comment">%Przebieg pr&#261;du twornika</span>
+subplot(312)
+plot(Is.time(:,1), Is.signals.values(:,1), Is.time, In_wektor,<span class="string">'--'</span>);
+title(<span class="string">'Przebieg pr&#261;du twornika'</span>)
+xlabel(<span class="string">'Czas [s]'</span>)
+ylabel(<span class="string">'Pr&#261;d twornika [A]'</span>)
+legend(<span class="string">'Pr&#261;d'</span>, <span class="string">'Ograniczenie'</span>)
+grid <span class="string">on</span>;
+
+<span class="comment">%Przebieg pr&#281;dko&#347;ci k&#261;towej</span>
+subplot(313)
+plot(omega.time(:,1), omega.signals.values(:,1), omega.time, wn_wektor,<span class="string">'--'</span>);
+title(<span class="string">'Przebieg pr&#281;dko&#347;ci k&#261;towej'</span>)
+xlabel(<span class="string">'Czas [s]'</span>)
+ylabel(<span class="string">'Pr&#281;dko&#347;&#263; k&#261;towa [rad/s]'</span>)
+legend(<span class="string">'Pr&#281;dko&#347;&#263; k&#261;towa'</span>, <span class="string">'Ograniczenie'</span>)
+grid <span class="string">on</span>;
+</pre><img vspace="5" hspace="5" src="projekt_04.png" alt=""> <h2 id="7">Rozruch ze znamionowym momentem czynnym</h2><pre class="codeinput">sim(<span class="string">'moment_czynny.slx'</span>)
+
+wn_wektor=ones(1,length(omega.time))*wn; <span class="comment">% ograniczenie pr&#281;dko&#347;ci</span>
+In_wektor=ones(1, length(Is.time))*In; <span class="comment">% ograniczenie pr&#261;du</span>
+Un_wektor=ones(1,length(Us.time))*Un; <span class="comment">% ograniczenie napi&#281;cia</span>
+
+<span class="comment">% Przebieg napi&#281;&#263;ia</span>
+f=figure;
+set(f,<span class="string">'name'</span>, <span class="string">'Rozruch ze znamionowym momentem czynnym'</span>)
+subplot(311)
+plot(Us.time(:,1), Us.signals.values(:,1), Us.time, Un_wektor,<span class="string">'--'</span>);
+title(<span class="string">'Przebieg napi&#281;cia'</span>)
+xlabel(<span class="string">'Czas [s]'</span>)
+ylabel(<span class="string">'Napi&#281;cie [V]'</span>)
+legend(<span class="string">'Napi&#281;cie'</span>, <span class="string">'Ograniczenie'</span>)
+grid <span class="string">on</span>;
+
+<span class="comment">%Przebieg pr&#261;du twornika</span>
+subplot(312)
+plot(Is.time(:,1), Is.signals.values(:,1), Is.time, In_wektor,<span class="string">'--'</span>);
+title(<span class="string">'Przebieg pr&#261;du twornika'</span>)
+xlabel(<span class="string">'Czas [s]'</span>)
+ylabel(<span class="string">'Pr&#261;d twornika [A]'</span>)
+legend(<span class="string">'Pr&#261;d'</span>, <span class="string">'Ograniczenie'</span>)
+grid <span class="string">on</span>;
+
+<span class="comment">%Przebieg pr&#281;dko&#347;ci k&#261;towej</span>
+subplot(313)
+plot(omega.time(:,1), omega.signals.values(:,1), omega.time, wn_wektor,<span class="string">'--'</span>);
+title(<span class="string">'Przebieg pr&#281;dko&#347;ci k&#261;towej'</span>)
+xlabel(<span class="string">'Czas [s]'</span>)
+ylabel(<span class="string">'Pr&#281;dko&#347;&#263; k&#261;towa [rad/s]'</span>)
+legend(<span class="string">'Pr&#281;dko&#347;&#263; k&#261;towa'</span>, <span class="string">'Ograniczenie'</span>)
+grid <span class="string">on</span>;
+</pre><img vspace="5" hspace="5" src="projekt_05.png" alt=""> <h2 id="8">Rozruch ze znamionowym momentem biernym</h2><pre class="codeinput">sim(<span class="string">'moment_bierny.slx'</span>)
+
+wn_wektor=ones(1,length(omega.time))*wn; <span class="comment">% ograniczenie pr&#281;dko&#347;ci</span>
+In_wektor=ones(1, length(Is.time))*In; <span class="comment">% ograniczenie pr&#261;du</span>
+Un_wektor=ones(1,length(Us.time))*Un; <span class="comment">% ograniczenie napi&#281;cia</span>
+
+<span class="comment">% Przebieg napi&#281;&#263;ia</span>
+f=figure;
+set(f,<span class="string">'name'</span>, <span class="string">'Rozruch ze znamionowym momentem biernym'</span>)
+subplot(311)
+plot(Us.time(:,1), Us.signals.values(:,1), Us.time, Un_wektor,<span class="string">'--'</span>);
+title(<span class="string">'Przebieg napi&#281;cia'</span>)
+xlabel(<span class="string">'Czas [s]'</span>)
+ylabel(<span class="string">'Napi&#281;cie [V]'</span>)
+legend(<span class="string">'Napi&#281;cie'</span>, <span class="string">'Ograniczenie'</span>)
+grid <span class="string">on</span>;
+
+<span class="comment">%Przebieg pr&#261;du twornika</span>
+subplot(312)
+plot(Is.time(:,1), Is.signals.values(:,1), Is.time, In_wektor,<span class="string">'--'</span>);
+title(<span class="string">'Przebieg pr&#261;du twornika'</span>)
+xlabel(<span class="string">'Czas [s]'</span>)
+ylabel(<span class="string">'Pr&#261;d twornika [A]'</span>)
+legend(<span class="string">'Pr&#261;d'</span>, <span class="string">'Ograniczenie'</span>)
+grid <span class="string">on</span>;
+
+<span class="comment">%Przebieg pr&#281;dko&#347;ci k&#261;towej</span>
+subplot(313)
+plot(omega.time(:,1), omega.signals.values(:,1), omega.time, wn_wektor,<span class="string">'--'</span>);
+title(<span class="string">'Przebieg pr&#281;dko&#347;ci k&#261;towej'</span>)
+xlabel(<span class="string">'Czas [s]'</span>)
+ylabel(<span class="string">'Pr&#281;dko&#347;&#263; k&#261;towa [rad/s]'</span>)
+legend(<span class="string">'Pr&#281;dko&#347;&#263; k&#261;towa'</span>, <span class="string">'Ograniczenie'</span>)
+grid <span class="string">on</span>;
+</pre><img vspace="5" hspace="5" src="projekt_06.png" alt=""> <h2 id="9">Zapas fazy i modu&#322;u</h2><pre class="codeinput"><span class="comment">% reg_momentu*przekszta&#322;tnik*silnik*bezw&#322;adno&#347;&#263;</span>
+tau0=3.3e-3
+RegPredkosc = tf([Kw*TR Kw],[TR,0]);        <span class="comment">% transmitacja regulatora pr&#281;dko&#347;ci</span>
+RegMoment = tf([m 1],[V 0]);                <span class="comment">% transmitancja regulatora momentu(pr&#261;du)</span>
+PrzeksztTyryst = tf([Kp],[tau0 1]);         <span class="comment">% transmitancja przekszta&#322;tnika tyrystorowego</span>
+Silnik = tf([B 0],[Rt*B1*T1 Rt*(B1+T1) Rt]);<span class="comment">% transmitancja silnik</span>
+Bezwlad = tf([1],[J 0]);                    <span class="comment">% transmitancja momentu bezwladnosci</span>
+uklad = series(RegMoment,PrzeksztTyryst);     <span class="comment">% liczymy szeregowo transmitancje regulatora predkosci i przekszta&#322;tnika tyrystorowego</span>
+uklad = series(uklad,Silnik);                   <span class="comment">% liczymy szeregowo transmitancj&#281; poprzedniego uk&#322;adu i silnika</span>
+uklad = feedback(uklad, Y);                     <span class="comment">% liczymy sprz&#281;&#380;enie zwrotne uzyskanej transmitancji oraz Y</span>
+uklad = series(RegPredkosc,uklad);              <span class="comment">% liczymy szeregowo transmitancj&#281; poprzedniego uk&#322;adu i regulatora pr&#281;dko&#347;ci</span>
+disp(<span class="string">'Transmitancja otwartego uk&#322;adu regulacji: '</span>);
+uklad = series(uklad,Bezwlad)                  <span class="comment">% liczymy szeregowo transmitancj&#281; poprzedniego uk&#322;adu i momentu bezwladnosci</span>
+
+<span class="comment">% Charakterystyki bodego otwartego uk&#322;adu</span>
+f = figure; set(f,<span class="string">'name'</span>,<span class="string">'Bode plot dla uk&#322;adu otwartego'</span>,<span class="string">'numbertitle'</span>,<span class="string">'off'</span>);
+bode(uklad);grid <span class="string">on</span>;                          <span class="comment">% charakterystyki Bodego</span>
+
+<span class="comment">% Charakterystyka nyquista otwartego uk&#322;adu</span>
+f = figure; set(f,<span class="string">'name'</span>,<span class="string">'Nyquist plot dla uk&#322;adu otwartego'</span>,<span class="string">'numbertitle'</span>,<span class="string">'off'</span>);
+subplot(2,1,1);
+nyquist(uklad);grid <span class="string">on</span>;                       <span class="comment">% charakterystyki nyquista</span>
+subplot(2,1,2);
+nyquist(uklad); axis([-0.85 0 -0.1 0.1]);
+
+<span class="comment">% liczymy transmitancj&#281; zamkni&#281;tego uk&#322;adu w celu wyznaczenia wg</span>
+disp(<span class="string">'Transmitancja zamkni&#281;tego uk&#322;adu regulacji: '</span>);
+uklad = feedback(uklad, Kt)
+
+<span class="comment">% Charakterystyka Bodego uk&#322;adu zamkni&#281;tego</span>
+f = figure; set(f,<span class="string">'name'</span>,<span class="string">'Bode plot dla uk&#322;adu zamkni&#281;tego'</span>,<span class="string">'numbertitle'</span>,<span class="string">'off'</span>);
+bode(uklad);grid <span class="string">on</span>;                          <span class="comment">% charakterystyki Bodego</span>
+[Gm,Pm,Wgm,Wpm] = margin(uklad);
+
+<span class="comment">% Charakterystyka nyquista uk&#322;adu zamkni&#281;tego oraz obliczanie zapasu fazy i wzmocnienia</span>
+f = figure; set(f,<span class="string">'name'</span>,<span class="string">'Nyquist plot dla uk&#322;adu zamkni&#281;tego'</span>,<span class="string">'numbertitle'</span>,<span class="string">'off'</span>);
+subplot(2,1,1);
+nyquist(uklad);grid <span class="string">on</span>; title(sprintf(<span class="string">'Zapas wzmocnienia %f[razy]\nZapas fazy %f[stopni]\nMaksymalne op&oacute;&#378;nienie %f[s]'</span>,Gm,Pm,Pm*pi/180/Wpm));
+subplot(2,1,2);
+nyquist(uklad); axis([-0.85 0 -0.1 0.1]);
+</pre><pre class="codeoutput">
+tau0 =
+
+    0.0033
+
+Transmitancja otwartego uk&#322;adu regulacji: 
+
+uklad =
+ 
+              32.11 s^3 + 356.4 s^2 + 973 s
+  ------------------------------------------------------
+  2.368e-05 s^6 + 0.007365 s^5 + 0.2146 s^4 + 0.8699 s^3
+ 
+Continuous-time transfer function.
+
+Transmitancja zamkni&#281;tego uk&#322;adu regulacji: 
+
+uklad =
+ 
+                                                    
+                       32.11 s^3 + 356.4 s^2 + 973 s
+                                                    
+  ------------------------------------------------------------------------
+                                                                          
+  2.368e-05 s^6 + 0.007365 s^5 + 0.2146 s^4 + 2.573 s^3 + 18.91 s^2       
+                                                                          
+                                                                 + 51.62 s
+                                                                          
+ 
+Continuous-time transfer function.
+
+Warning: The closed-loop system is unstable. 
+</pre><img vspace="5" hspace="5" src="projekt_07.png" alt=""> <img vspace="5" hspace="5" src="projekt_08.png" alt=""> <img vspace="5" hspace="5" src="projekt_09.png" alt=""> <img vspace="5" hspace="5" src="projekt_10.png" alt=""> <p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+clear all; close all
+%% Dane wejś›ciowe
+Pn = 17e3; % Moc znamionowa
+Un = 220;  % Znamionowe napiecie zasilania
+In = 88;   % Prad znamionowy
+nn = 1500; % Znamionowa predkosc obrotowa
+Rt = 0.15; % Rezystancja uogolniona
+Lt = 18.75e-3; % Indukcyjnosc
+Js = 0.275; % Moment bezwladnosci wirnika
+
+L = Lt; % Indukcyjnosc calkowita
+R = Rt; % Rezystancja uogolniona
+J = 22*Js; % Moment bezwladnosci silnika i agregatu
+
+wn = 2*pi*nn/60;
+
+lambda_n = 2; % Stala ograniczajaca prad
+p = 50; % Dopuszczalna krotnosc pradu
+Beta = lambda_n/p; % Stala czasowa przebiegu pradu twornika
+
+psi_e = (Un-In*R)/wn; % znamionowy strumieďż˝ skojarzony rotacyjnie z uzwojeniem tworika
+
+B = J*R/(psi_e^2); % staďż˝a elektromechaniczna napďż˝du
+T = L/R; % elektromagnetyczna staďż˝a czasowa
+Tm = 0; % stała czasowa obwodu wzbudzenia
+
+Mn=psi_e*In;  % Moment znamionowy
+Mm=Mn; % Moment mechaniczny
+Mb=Mn*sign(wn);
+
+%Sprawdzanie warunku B > 4T
+if B > 4*T
+    disp('Ok')
+else
+    disp('Zle')
+end
+
+%% Obliczenie transmitancji
+G_wU = tf([0 0 1/psi_e],[B*T B 1]);
+G_wM = tf([0 Rt/(psi_e^2)*T Rt/(psi_e^2)],[B*T B 1]);
+G_IU = tf([0 B/Rt 0],[B*T B 1]);
+G_IM = tf([0 0 1/psi_e],[B*T B 1]);
+
+sim('pkt1.slx')
+
+wn_wektor=ones(1,length(dane.time))*wn; % ograniczenie prędkości
+In_wektor=ones(1, length(dane.time))*In; % ograniczenie prądu
+Un_wektor=ones(1,length(dane.time))*Un; % ograniczenie napięcia
+
+figure; plot(dane.time, dane.signals.values(:,1),dane.time, wn_wektor,'REPLACE_WITH_DASH_DASH')
+title('Prędkość kątowa'); xlabel('Czas [s]'); ylabel('\omega[rad/s]'); grid on;
+legend('Prędkość kątowa', 'Ograniczenie')
+
+
+figure; plot(dane.time, dane.signals.values(:,2))
+title('Przebieg pochodnej prądu twornika'); xlabel('Czas [s]'); ylabel('\omega[rad/s]'); grid on;
+
+
+figure; plot(dane.time, dane.signals.values(:,3),dane.time, In_wektor,'REPLACE_WITH_DASH_DASH');
+title('Przebieg prądu twornika'); xlabel('Czas [s]'); ylabel('\omega[rad/s]'); grid on;
+legend('Prąd twornika', 'Ograniczenie')
+
+
+%% Nastawy regulatora prądu
+
+%Beta = lambda_n/p;
+
+Y=10/(2.5*In);
+Kt=10/(1.2*wn);
+wz=wn*Kt;
+Kp=1.5*Un/10;
+T1=0.5*B*(1-sqrt(1-4*T/B));
+B1=B-T1;
+kz=(B1-Beta)/(Y*B1);
+m=T1;
+V=Beta*Y*Kp*B/((B1-Beta)*Rt);
+Uz0=lambda_n*In*Y*B1/(B1-Beta);
+
+%% Nastawy regulatora prędkości PI
+
+TR=4*Beta;
+Kw=J/(2*Kt*kz*Beta*psi_e);
+
+%% Rozruch bez momentu obciążenia i obciążenie udarowe(stabilizacja)
+sim('moment_udarowy.slx')
+
+wn_wektor=ones(1,length(omega.time))*wn; % ograniczenie prędkości
+In_wektor=ones(1, length(Is.time))*In; % ograniczenie prądu
+Un_wektor=ones(1,length(Us.time))*Un; % ograniczenie napięcia
+
+% Przebieg napięćia
+f=figure;
+set(f,'name','Rozruch bez momentu obciążeniia i obciążenie udarowe(stabilizacja)')
+subplot(311)
+plot(Us.time(:,1), Us.signals.values(:,1), Us.time, Un_wektor,'REPLACE_WITH_DASH_DASH');
+title('Przebieg napięcia')
+xlabel('Czas [s]')
+ylabel('Napięcie [V]')
+legend('Napięcie', 'Ograniczenie')
+grid on;
+
+%Przebieg prądu twornika
+subplot(312)
+plot(Is.time(:,1), Is.signals.values(:,1), Is.time, In_wektor,'REPLACE_WITH_DASH_DASH');
+title('Przebieg prądu twornika')
+xlabel('Czas [s]')
+ylabel('Prąd twornika [A]')
+legend('Prąd', 'Ograniczenie')
+grid on;
+
+%Przebieg prędkości kątowej
+subplot(313)
+plot(omega.time(:,1), omega.signals.values(:,1), omega.time, wn_wektor,'REPLACE_WITH_DASH_DASH');
+title('Przebieg prędkości kątowej')
+xlabel('Czas [s]')
+ylabel('Prędkość kątowa [rad/s]')
+legend('Prędkość kątowa', 'Ograniczenie')
+grid on;
+
+%% Rozruch ze znamionowym momentem czynnym
+sim('moment_czynny.slx')
+
+wn_wektor=ones(1,length(omega.time))*wn; % ograniczenie prędkości
+In_wektor=ones(1, length(Is.time))*In; % ograniczenie prądu
+Un_wektor=ones(1,length(Us.time))*Un; % ograniczenie napięcia
+
+% Przebieg napięćia
+f=figure;
+set(f,'name', 'Rozruch ze znamionowym momentem czynnym')
+subplot(311)
+plot(Us.time(:,1), Us.signals.values(:,1), Us.time, Un_wektor,'REPLACE_WITH_DASH_DASH');
+title('Przebieg napięcia')
+xlabel('Czas [s]')
+ylabel('Napięcie [V]')
+legend('Napięcie', 'Ograniczenie')
+grid on;
+
+%Przebieg prądu twornika
+subplot(312)
+plot(Is.time(:,1), Is.signals.values(:,1), Is.time, In_wektor,'REPLACE_WITH_DASH_DASH');
+title('Przebieg prądu twornika')
+xlabel('Czas [s]')
+ylabel('Prąd twornika [A]')
+legend('Prąd', 'Ograniczenie')
+grid on;
+
+%Przebieg prędkości kątowej
+subplot(313)
+plot(omega.time(:,1), omega.signals.values(:,1), omega.time, wn_wektor,'REPLACE_WITH_DASH_DASH');
+title('Przebieg prędkości kątowej')
+xlabel('Czas [s]')
+ylabel('Prędkość kątowa [rad/s]')
+legend('Prędkość kątowa', 'Ograniczenie')
+grid on;
+
+%% Rozruch ze znamionowym momentem biernym
+sim('moment_bierny.slx')
+
+wn_wektor=ones(1,length(omega.time))*wn; % ograniczenie prędkości
+In_wektor=ones(1, length(Is.time))*In; % ograniczenie prądu
+Un_wektor=ones(1,length(Us.time))*Un; % ograniczenie napięcia
+
+% Przebieg napięćia
+f=figure;
+set(f,'name', 'Rozruch ze znamionowym momentem biernym')
+subplot(311)
+plot(Us.time(:,1), Us.signals.values(:,1), Us.time, Un_wektor,'REPLACE_WITH_DASH_DASH');
+title('Przebieg napięcia')
+xlabel('Czas [s]')
+ylabel('Napięcie [V]')
+legend('Napięcie', 'Ograniczenie')
+grid on;
+
+%Przebieg prądu twornika
+subplot(312)
+plot(Is.time(:,1), Is.signals.values(:,1), Is.time, In_wektor,'REPLACE_WITH_DASH_DASH');
+title('Przebieg prądu twornika')
+xlabel('Czas [s]')
+ylabel('Prąd twornika [A]')
+legend('Prąd', 'Ograniczenie')
+grid on;
+
+%Przebieg prędkości kątowej
+subplot(313)
+plot(omega.time(:,1), omega.signals.values(:,1), omega.time, wn_wektor,'REPLACE_WITH_DASH_DASH');
+title('Przebieg prędkości kątowej')
+xlabel('Czas [s]')
+ylabel('Prędkość kątowa [rad/s]')
+legend('Prędkość kątowa', 'Ograniczenie')
+grid on;
+
+%% Zapas fazy i modułu
+
+% reg_momentu*przekształtnik*silnik*bezwładność
+tau0=3.3e-3
+RegPredkosc = tf([Kw*TR Kw],[TR,0]);        % transmitacja regulatora prędkości
+RegMoment = tf([m 1],[V 0]);                % transmitancja regulatora momentu(prądu)
+PrzeksztTyryst = tf([Kp],[tau0 1]);         % transmitancja przekształtnika tyrystorowego
+Silnik = tf([B 0],[Rt*B1*T1 Rt*(B1+T1) Rt]);% transmitancja silnik
+Bezwlad = tf([1],[J 0]);                    % transmitancja momentu bezwladnosci
+uklad = series(RegMoment,PrzeksztTyryst);     % liczymy szeregowo transmitancje regulatora predkosci i przekształtnika tyrystorowego
+uklad = series(uklad,Silnik);                   % liczymy szeregowo transmitancję poprzedniego układu i silnika
+uklad = feedback(uklad, Y);                     % liczymy sprzężenie zwrotne uzyskanej transmitancji oraz Y
+uklad = series(RegPredkosc,uklad);              % liczymy szeregowo transmitancję poprzedniego układu i regulatora prędkości
+disp('Transmitancja otwartego układu regulacji: ');
+uklad = series(uklad,Bezwlad)                  % liczymy szeregowo transmitancję poprzedniego układu i momentu bezwladnosci
+
+% Charakterystyki bodego otwartego układu
+f = figure; set(f,'name','Bode plot dla układu otwartego','numbertitle','off');
+bode(uklad);grid on;                          % charakterystyki Bodego
+
+% Charakterystyka nyquista otwartego układu
+f = figure; set(f,'name','Nyquist plot dla układu otwartego','numbertitle','off');
+subplot(2,1,1);
+nyquist(uklad);grid on;                       % charakterystyki nyquista
+subplot(2,1,2);
+nyquist(uklad); axis([-0.85 0 -0.1 0.1]);  
+
+% liczymy transmitancję zamkniętego układu w celu wyznaczenia wg
+disp('Transmitancja zamkniętego układu regulacji: ');
+uklad = feedback(uklad, Kt)
+
+% Charakterystyka Bodego układu zamkniętego
+f = figure; set(f,'name','Bode plot dla układu zamkniętego','numbertitle','off');
+bode(uklad);grid on;                          % charakterystyki Bodego
+[Gm,Pm,Wgm,Wpm] = margin(uklad);
+
+% Charakterystyka nyquista układu zamkniętego oraz obliczanie zapasu fazy i wzmocnienia
+f = figure; set(f,'name','Nyquist plot dla układu zamkniętego','numbertitle','off');
+subplot(2,1,1);
+nyquist(uklad);grid on; title(sprintf('Zapas wzmocnienia %f[razy]\nZapas fazy %f[stopni]\nMaksymalne opóźnienie %f[s]',Gm,Pm,Pm*pi/180/Wpm));
+subplot(2,1,2);
+nyquist(uklad); axis([-0.85 0 -0.1 0.1]); 
+           
+
+##### SOURCE END #####
+--></body></html>

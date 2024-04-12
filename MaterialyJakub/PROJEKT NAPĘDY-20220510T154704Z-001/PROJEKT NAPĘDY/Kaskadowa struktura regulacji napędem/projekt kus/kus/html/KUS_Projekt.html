@@ -1,0 +1,912 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Komputerowe uk&#322;ady sterowania</title><meta name="generator" content="MATLAB 9.2"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-06-05"><meta name="DC.source" content="KUS_Projekt.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Komputerowe uk&#322;ady sterowania</h1><!--introduction--><p>Projekt 2018 Autorzy: Tomasz Kielar, Tomasz Telesz EAIiIB Elektrotechnika rok III</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">1. Czyszczenie przestrzeni roboczej</a></li><li><a href="#4">2. Dane</a></li><li><a href="#5">2. Dane</a></li><li><a href="#8">3. Prze&#322;&#261;cznia uk&#322;adu</a></li><li><a href="#11">4. Sprawdzenie warunk&oacute;w</a></li><li><a href="#14">5. Obliczenia</a></li><li><a href="#17">6. Odpowiedzi model&oacute;w w postaci transmitancji na skok impilsow</a></li><li><a href="#20">7. Rysowanie przebieg&oacute;w symulacyjnych - uk&#322;ad analogowy</a></li><li><a href="#23">8. Przekszta&#322;tnik tyrystrowy</a></li><li><a href="#26">9. Dyskretny regulator pr&#281;dko&#347;ci/pr&#261;du</a></li><li><a href="#29">10. Por&oacute;wnanie przebieg&oacute;w dla prawid&#322;owo dobranego czasu pr&oacute;bkowania i zbyt du&#380;ego</a></li><li><a href="#32">11. Rysowanie przebieg&oacute;w symulacyjnych - uk&#322;ad cyfrowy</a></li></ul></div><h2 id="1">1. Czyszczenie przestrzeni roboczej</h2><pre class="codeinput"> clc, clear <span class="string">all</span>, close <span class="string">all</span>
+</pre><h2 id="4">2. Dane</h2><h2 id="5">2. Dane</h2><pre class="codeinput">Pn = 54000;  <span class="comment">%moc znamionowa [W]</span>
+Un = 440;   <span class="comment">%napi&#281;cie znamionowe [V]</span>
+In = 130.7;    <span class="comment">%pr&#261;d znamionowy [A]</span>
+Nn = 1450;  <span class="comment">%pr&#281;dko&#347;&#263; znamionowa [obr/min]</span>
+R = 0.254;  <span class="comment">%rezystancja twornika [Ohm]</span>
+L = 1.63*10^-3;   <span class="comment">%indukcujnosc twornika [H]</span>
+Js = 0.97*15;  <span class="comment">%moment bezwladnosci [kg*m^2]</span>
+</pre><h2 id="8">3. Prze&#322;&#261;cznia uk&#322;adu</h2><pre class="codeinput">regpred = 1;        <span class="comment">%1 - regulator PI, 0 - reg P</span>
+przelacz3 = 0;      <span class="comment">%1 - za&#322;&#261;cza moment obci&#261;&#380;enia</span>
+delomega = 0;       <span class="comment">%1 - deltaomega 2%, 0 - 5%</span>
+</pre><h2 id="11">4. Sprawdzenie warunk&oacute;w</h2><pre class="codeinput">fn = Nn/60;     <span class="comment">%cz&#281;stotliwo&#347;&#263; znamionowa</span>
+omegan = 2*pi*fn;   <span class="comment">%pulsacja znamionowa</span>
+lambdan = 2;
+p = 50;
+T = L/R;    <span class="comment">%elektromagnetyczna sta&#322;a czasowa</span>
+J = 6*Js;   <span class="comment">%zast&#281;pszy moment bezw&#322;adno&#347;ci</span>
+psien = (Un-R*In)/omegan;   <span class="comment">%znamionowy strumie&#324;</span>
+B = J*R/psien^2;    <span class="comment">%elektromechaniczna sta&#322;a czasowa</span>
+</pre><h2 id="14">5. Obliczenia</h2><pre class="codeinput">tau0 = 3.3e-3;  <span class="comment">%[s] sta&#322;a czasowa przekszta&#322;tnika tyrystorowego</span>
+Kp = 1.5*Un/10;    <span class="comment">%wzmocnienie wzmacniacza mocy</span>
+Y = 7.8/(2.5*In);     <span class="comment">%zmienione z 10 na 7.8, bo nie spe&#322;nia&#322;o warunku z Uz0</span>
+Kt = 10/(1.2*omegan);   <span class="comment">%wzmocnienie</span>
+Mn = psien*In;  <span class="comment">%znamionowy moment obci&#261;&#380;enia</span>
+Top = 0;  <span class="comment">%op&oacute;&#378;nienie za&#322;&#261;czanie znamionowego momentu obci&#261;&#380;enia</span>
+<span class="keyword">if</span> (delomega == 0)
+    deltaomega = 0.05*omegan;   <span class="comment">%statyzm regulacji</span>
+<span class="keyword">else</span>
+    deltaomega = 0.02*omegan;
+<span class="keyword">end</span>;
+beta = lambdan/p;   <span class="comment">%sta&#322;a czasowa przebiegu pr&#261;du twornika</span>
+T1 = 0.5*B*(1-sqrt(1-4*T/B));
+B1 = B-T1;
+kz = (B1-beta)/(Y*B1);  <span class="comment">%zast&#281;pczy wsp&oacute;&#322;czynnik wzmocnienia</span>
+<span class="keyword">if</span> (B &gt; 4*T)
+    m = T1;                         <span class="comment">%parametry regulatora</span>
+    V = beta*Y*Kp*B/((B1-beta)*R);  <span class="comment">%</span>
+<span class="keyword">else</span>
+    m = sqrt(B*T);
+    V = Kp*Y/R*B*beta/(sqrt(B*T)-beta);
+<span class="keyword">end</span>
+Uz0 = lambdan*In*Y*B1/(B1-beta);    <span class="comment">%ograniczenie Uz0 &lt; 10V</span>
+
+TR = 4*beta;  <span class="comment">%parametr wg kryterium symetrycznego</span>
+<span class="keyword">if</span> (regpred == 0)
+    Kw = Mn/(psien*kz*Kt*deltaomega);    <span class="comment">%regulator P</span>
+<span class="keyword">else</span>
+    Kw = J/(2*Kt*kz*beta*psien);    <span class="comment">%regulator PI</span>
+<span class="keyword">end</span>;
+time = linspace(0,1,2);
+Imax = In*lambdan+0*time;
+</pre><h2 id="17">6. Odpowiedzi model&oacute;w w postaci transmitancji na skok impilsow</h2><pre class="codeinput">sim(<span class="string">'Projekt_KUS_sim'</span>);
+figure()
+grid <span class="string">on</span>
+hold <span class="string">on</span>
+title(<span class="string">'GIU'</span>);
+xlabel(<span class="string">'Czas [s]'</span>);
+ylabel(<span class="string">'Pr&#261;d [I]'</span>);
+ylim([0 1800]);
+plot(GUI_imp.time,GUI_imp.signals.values(:,1));
+plot(time,Imax,<span class="string">'r'</span>);
+
+figure()
+grid <span class="string">on</span>
+hold <span class="string">on</span>
+title(<span class="string">'GIU pochodna'</span>);
+xlabel(<span class="string">'Czas [s]'</span>);
+ylabel(<span class="string">'Pochodna pr&#261;du [I/s]'</span>);
+ylim([-0.5, 28.e4]);
+plot(GUI_der_imp.time,GUI_der_imp.signals.values(:,1));
+
+figure()
+grid <span class="string">on</span>
+hold <span class="string">on</span>
+<span class="comment">%title('GomegaM');</span>
+xlabel(<span class="string">'Czas [s]'</span>);
+ylabel(<span class="string">'Pulsacja [rad/s]'</span>);
+ylim([0 4]);
+plot(GomegaM_imp.time,GomegaM_imp.signals.values(:,1));
+
+figure()
+grid <span class="string">on</span>
+hold <span class="string">on</span>
+<span class="comment">%title('GomegaU');</span>
+xlabel(<span class="string">'Czas [s]'</span>);
+ylabel(<span class="string">'Pulsacja [rad/s]'</span>);
+ylim([0 60]);
+plot(GomegaU_imp.time,GomegaU_imp.signals.values(:,1));
+
+figure()
+grid <span class="string">on</span>
+hold <span class="string">on</span>
+title(<span class="string">'GIM'</span>);
+xlabel(<span class="string">'Czas [s]'</span>);
+ylabel(<span class="string">'Pr&#261;d [I]'</span>);
+ylim([0 40]);
+plot(GIM_imp.time,GIM_imp.signals.values(:,1));
+plot(time,Imax,<span class="string">'r'</span>);
+</pre><img vspace="5" hspace="5" src="KUS_Projekt_01.png" style="width:560px;height:420px;" alt=""> <img vspace="5" hspace="5" src="KUS_Projekt_02.png" style="width:560px;height:420px;" alt=""> <img vspace="5" hspace="5" src="KUS_Projekt_03.png" style="width:560px;height:420px;" alt=""> <img vspace="5" hspace="5" src="KUS_Projekt_04.png" style="width:560px;height:420px;" alt=""> <img vspace="5" hspace="5" src="KUS_Projekt_05.png" style="width:560px;height:420px;" alt=""> <h2 id="20">7. Rysowanie przebieg&oacute;w symulacyjnych - uk&#322;ad analogowy</h2><pre class="codeinput"><span class="keyword">for</span> x = 1:2
+    <span class="keyword">for</span> p = 1:3
+        <span class="keyword">if</span>(x == 1)
+            regpred = 1;    <span class="comment">%regulator PI</span>
+        <span class="keyword">elseif</span>(x == 2)
+            regpred = 0;    <span class="comment">%regulator P</span>
+        <span class="keyword">end</span>;
+        <span class="keyword">if</span>(p == 1)
+            przelacz3 = 0;   <span class="comment">%wy&#322;&#261;cza moment obci&#261;&#380;enia</span>
+        <span class="keyword">elseif</span>(p == 2)
+            przelacz3 = 1;  <span class="comment">%za&#322;&#261;cza moment obci&#261;&#380;enia</span>
+        <span class="keyword">elseif</span> (p == 3)
+            Top = 5;    <span class="comment">%op&oacute;&#378;nie za&#322;&#261;czenie momentu (za&#322;&#261;czenie udarowe)</span>
+        <span class="keyword">end</span>;
+        sim(<span class="string">'projekt'</span>);
+
+        figure()
+        subplot(311)
+        grid <span class="string">on</span>
+        hold <span class="string">on</span>
+        title(<span class="string">'Napi&#281;cie silnika'</span>);
+        xlabel(<span class="string">'Czas [s]'</span>);
+        ylabel(<span class="string">'Napi&#281;cie [V]'</span>);
+        plot(Us.time,Us.signals.values(:,1));
+        xlim([0 3]);
+
+        subplot(312)
+        grid <span class="string">on</span>
+        hold <span class="string">on</span>
+        title(<span class="string">'Pr&#261;d silnika'</span>);
+        xlabel(<span class="string">'Czas [s]'</span>);
+        ylabel(<span class="string">'Pr&#261;d [A]'</span>);
+        plot(Is.time,Is.signals.values(:,1));
+        plot(Imax.time,Imax.signals.values(:,1),<span class="string">'r'</span>);
+        xlim([0 3]);
+
+        subplot(313)
+        grid <span class="string">on</span>
+        hold <span class="string">on</span>
+        title(<span class="string">'Pulsacja silnika'</span>);
+        xlabel(<span class="string">'Czas [s]'</span>);
+        ylabel(<span class="string">'Pulsacja [rad/s]'</span>);
+        plot(omega.time,omega.signals.values(:,1));
+        xlim([0 3]);
+
+    <span class="keyword">end</span>;
+<span class="keyword">end</span>;
+</pre><img vspace="5" hspace="5" src="KUS_Projekt_06.png" style="width:560px;height:420px;" alt=""> <img vspace="5" hspace="5" src="KUS_Projekt_07.png" style="width:560px;height:420px;" alt=""> <img vspace="5" hspace="5" src="KUS_Projekt_08.png" style="width:560px;height:420px;" alt=""> <img vspace="5" hspace="5" src="KUS_Projekt_09.png" style="width:560px;height:420px;" alt=""> <img vspace="5" hspace="5" src="KUS_Projekt_10.png" style="width:560px;height:420px;" alt=""> <img vspace="5" hspace="5" src="KUS_Projekt_11.png" style="width:560px;height:420px;" alt=""> <h2 id="23">8. Przekszta&#322;tnik tyrystrowy</h2><pre class="codeinput">KR=m/V;
+tau0=3.3*10^(-3);
+reg_pred=tf([KR*TR KR], [TR 0]);        <span class="comment">%regulacja predkosci</span>
+reg_mom=tf([m 1], [V 0]);               <span class="comment">%regulacja momentu</span>
+przeksztyr=tf([Kp], [tau0 1]);          <span class="comment">%przeksztaltnik tyrystorowy</span>
+silnik=tf([B 0], [R*B1*T1 R*(B1+T1) R]);    <span class="comment">%moment silnika</span>
+bezwl=tf([1],[J 0]);                    <span class="comment">%bezwladnosc</span>
+
+sys=series(reg_mom,przeksztyr);
+sys=series(sys,silnik);
+
+sys=feedback(sys,Y);
+
+sys=series(psien,sys);
+sys=series(reg_pred,sys);
+sys=series(sys,bezwl);
+
+figure
+bode(sys)
+grid <span class="string">on</span>;
+
+P = nyquistoptions;
+P.ShowFullContour = <span class="string">'off'</span>;
+
+figure
+nyquist(sys, P)
+grid <span class="string">on</span>
+
+figure
+margin(sys)
+
+<span class="comment">% op=Pm*(pi/180)/Wpm;</span>
+
+Gp = tf(Kp,[tau0 1]);
+Gi = tf(m+1, V);
+Gs = tf(B/R,[B1 1]);
+G1 = Kt*tf([TR 1],[TR 0]);
+Gj = tf(1,[J 1]);
+
+Gz = Gi*Gp*Gs/((1+Gi*Gp*Gs)*Y);
+G0 = G1*Gz*psien*Gj;
+
+figure()
+margin(G0);
+
+<span class="comment">%Charakterystyki</span>
+figure()   <span class="comment">%dla Gz</span>
+subplot(211)
+title(<span class="string">'Charakterystyki dla Gz'</span>);
+hold <span class="string">on</span>
+bode(Gz);
+grid <span class="string">on</span>
+P = nyquistoptions;
+P.ShowFullContour = <span class="string">'off'</span>;
+subplot(212)
+nyquist(Gz, P);
+figure()   <span class="comment">%dla G0</span>
+subplot(211)
+title(<span class="string">'Charakterystyki dla G0'</span>);
+hold <span class="string">on</span>
+bode(G0);
+grid <span class="string">on</span>
+subplot(212)
+nyquist(G0, P);
+<span class="comment">%</span>
+</pre><img vspace="5" hspace="5" src="KUS_Projekt_12.png" style="width:560px;height:420px;" alt=""> <img vspace="5" hspace="5" src="KUS_Projekt_13.png" style="width:560px;height:420px;" alt=""> <img vspace="5" hspace="5" src="KUS_Projekt_14.png" style="width:560px;height:420px;" alt=""> <img vspace="5" hspace="5" src="KUS_Projekt_15.png" style="width:560px;height:420px;" alt=""> <img vspace="5" hspace="5" src="KUS_Projekt_16.png" style="width:560px;height:420px;" alt=""> <img vspace="5" hspace="5" src="KUS_Projekt_17.png" style="width:560px;height:420px;" alt=""> <h2 id="26">9. Dyskretny regulator pr&#281;dko&#347;ci/pr&#261;du</h2><pre class="codeinput">N = 10; <span class="comment">%liczba pr&oacute;bek</span>
+Tp = beta/N;    <span class="comment">%krok pr&oacute;bkowania</span>
+K1 = Kw;    <span class="comment">%wzmocnienia regulatora pr&#281;dko&#347;ci</span>
+K2 = Kw*(1-(Tp/TR));
+
+K1I = m/V;  <span class="comment">%wzmocnienia regulatora pr&#261;du</span>
+K2I = (Tp-m)/V;
+
+deltaI = psien*V*Mn/(psien^2*V+J*Kp*Y);
+</pre><h2 id="29">10. Por&oacute;wnanie przebieg&oacute;w dla prawid&#322;owo dobranego czasu pr&oacute;bkowania i zbyt du&#380;ego</h2><pre class="codeinput">figure()
+<span class="keyword">for</span> x = 1:2
+    <span class="keyword">if</span>(x == 2)
+        Tp = 4*Tp;
+    <span class="keyword">end</span>;
+    sim(<span class="string">'Projekt_KUS_cyfro_sim'</span>);
+    subplot(311)
+    hold <span class="string">on</span>
+    grid <span class="string">on</span>
+    <span class="keyword">if</span>(x == 1)
+        plot(us.time,us.signals.values(:,1),<span class="string">'b'</span>)
+        xlim([0 6]);
+    <span class="keyword">elseif</span> (x == 2)
+        plot(us.time,us.signals.values(:,1),<span class="string">'k'</span>)
+        xlim([0 6]);
+    <span class="keyword">end</span>;
+    title(<span class="string">'Napi&#281;cie silnika'</span>);
+    xlabel(<span class="string">'Czas [s]'</span>);
+    ylabel(<span class="string">'Napi&#281;cie [V]'</span>);
+    <span class="keyword">if</span>(x == 2)
+        legend(<span class="string">'Prawid&#322;owo dobrany'</span>,<span class="string">'Nieprawid&#322;owo dobrany (za du&#380;y)'</span>);
+    <span class="keyword">end</span>;
+
+    subplot(312)
+    hold <span class="string">on</span>
+    grid <span class="string">on</span>
+    <span class="keyword">if</span>(x == 1)
+        plot(dltpipi.time,dltpipi.signals.values(:,1),<span class="string">'b'</span>)
+        xlim([0 7]);
+    <span class="keyword">elseif</span> (x == 2)
+        plot(dltpipi.time,dltpipi.signals.values(:,1),<span class="string">'k'</span>)
+        xlim([0 7]);
+    <span class="keyword">end</span>;
+    plot(Imax.time,Imax.signals.values(:,1),<span class="string">'r'</span>);
+    title(<span class="string">'Pr&#261;d silnika'</span>);
+    xlabel(<span class="string">'Czas [s]'</span>);
+    ylabel(<span class="string">'Pr&#261;d [A]'</span>);
+    <span class="keyword">if</span>(x == 2)
+        legend(<span class="string">'Prawid&#322;owo dobrany'</span>,<span class="string">'Nieprawid&#322;owo dobrany (za du&#380;y)'</span>);
+    <span class="keyword">end</span>;
+
+    subplot(313)
+    hold <span class="string">on</span>
+    grid <span class="string">on</span>
+    <span class="keyword">if</span>(x == 1)
+        plot(domegapipi.time,domegapipi.signals.values(:,1),<span class="string">'b'</span>)
+        xlim([0 6]);
+    <span class="keyword">elseif</span> (x == 2)
+        plot(domegapipi.time,domegapipi.signals.values(:,1),<span class="string">'k'</span>)
+        xlim([0 6]);
+    <span class="keyword">end</span>;
+    title(<span class="string">'Pulsacja silnika'</span>);
+    xlabel(<span class="string">'Czas [s]'</span>);
+    ylabel(<span class="string">'Pulsacja [rad/s]'</span>);
+    <span class="keyword">if</span>(x == 2)
+         legend(<span class="string">'Prawid&#322;owo dobrany'</span>,<span class="string">'Nieprawid&#322;owo dobrany (za du&#380;y)'</span>);
+    <span class="keyword">end</span>;
+<span class="keyword">end</span>;
+</pre><pre class="codeoutput">Warning: Input port 1 of '&lt;a href="matlab:open_and_hilite_hyperlink
+('Projekt_KUS_cyfro_sim/Quantizer','error')"&gt;Projekt_KUS_cyfro_sim/Quantizer&lt;/a&gt;'
+is not connected. 
+Warning: Output port 1 of '&lt;a href="matlab:open_and_hilite_hyperlink
+('Projekt_KUS_cyfro_sim/Quantizer','error')"&gt;Projekt_KUS_cyfro_sim/Quantizer&lt;/a&gt;'
+is not connected. 
+Warning: Input port 1 of '&lt;a href="matlab:open_and_hilite_hyperlink
+('Projekt_KUS_cyfro_sim/Quantizer1','error')"&gt;Projekt_KUS_cyfro_sim/Quantizer1&lt;/a&gt;'
+is not connected. 
+Warning: Output port 1 of '&lt;a href="matlab:open_and_hilite_hyperlink
+('Projekt_KUS_cyfro_sim/Quantizer1','error')"&gt;Projekt_KUS_cyfro_sim/Quantizer1&lt;/a&gt;'
+is not connected. 
+Warning: Input port 1 of '&lt;a href="matlab:open_and_hilite_hyperlink
+('Projekt_KUS_cyfro_sim/Quantizer2','error')"&gt;Projekt_KUS_cyfro_sim/Quantizer2&lt;/a&gt;'
+is not connected. 
+Warning: Output port 1 of '&lt;a href="matlab:open_and_hilite_hyperlink
+('Projekt_KUS_cyfro_sim/Quantizer2','error')"&gt;Projekt_KUS_cyfro_sim/Quantizer2&lt;/a&gt;'
+is not connected. 
+Warning: Input port 1 of '&lt;a href="matlab:open_and_hilite_hyperlink
+('Projekt_KUS_cyfro_sim/Quantizer','error')"&gt;Projekt_KUS_cyfro_sim/Quantizer&lt;/a&gt;'
+is not connected. 
+Warning: Output port 1 of '&lt;a href="matlab:open_and_hilite_hyperlink
+('Projekt_KUS_cyfro_sim/Quantizer','error')"&gt;Projekt_KUS_cyfro_sim/Quantizer&lt;/a&gt;'
+is not connected. 
+Warning: Input port 1 of '&lt;a href="matlab:open_and_hilite_hyperlink
+('Projekt_KUS_cyfro_sim/Quantizer1','error')"&gt;Projekt_KUS_cyfro_sim/Quantizer1&lt;/a&gt;'
+is not connected. 
+Warning: Output port 1 of '&lt;a href="matlab:open_and_hilite_hyperlink
+('Projekt_KUS_cyfro_sim/Quantizer1','error')"&gt;Projekt_KUS_cyfro_sim/Quantizer1&lt;/a&gt;'
+is not connected. 
+Warning: Input port 1 of '&lt;a href="matlab:open_and_hilite_hyperlink
+('Projekt_KUS_cyfro_sim/Quantizer2','error')"&gt;Projekt_KUS_cyfro_sim/Quantizer2&lt;/a&gt;'
+is not connected. 
+Warning: Output port 1 of '&lt;a href="matlab:open_and_hilite_hyperlink
+('Projekt_KUS_cyfro_sim/Quantizer2','error')"&gt;Projekt_KUS_cyfro_sim/Quantizer2&lt;/a&gt;'
+is not connected. 
+</pre><img vspace="5" hspace="5" src="KUS_Projekt_18.png" style="width:560px;height:420px;" alt=""> <h2 id="32">11. Rysowanie przebieg&oacute;w symulacyjnych - uk&#322;ad cyfrowy</h2><pre class="codeinput">Tp = beta/N;
+<span class="keyword">for</span> x = 1:1
+    <span class="keyword">for</span> p = 1:3
+        <span class="keyword">if</span>(x == 1)
+            regpred = 1;    <span class="comment">%regulator PI</span>
+        <span class="keyword">elseif</span>(x == 2)
+            regpred = 0;    <span class="comment">%regulator P</span>
+        <span class="keyword">end</span>;
+        Top = 0;
+        <span class="keyword">if</span>(p == 1)
+            przelacz3 = 0;   <span class="comment">%wy&#322;&#261;cza moment obci&#261;&#380;enia</span>
+        <span class="keyword">elseif</span>(p == 2)
+            przelacz3 = 1;  <span class="comment">%za&#322;&#261;cza moment obci&#261;&#380;enia</span>
+        <span class="keyword">elseif</span> (p == 3)
+            Top = 2;    <span class="comment">%op&oacute;&#378;nie za&#322;&#261;czenie momentu (za&#322;&#261;czenie udarowe)</span>
+        <span class="keyword">end</span>;
+        sim(<span class="string">'Projekt_KUS_cyfro_sim'</span>);
+
+        figure()
+        subplot(311)
+        hold <span class="string">on</span>
+        grid <span class="string">on</span>
+        plot(us.time,us.signals.values(:,1))
+        xlim([0 3]);
+        title(<span class="string">'Napi&#281;cie silnika'</span>);
+        xlabel(<span class="string">'Czas [s]'</span>);
+        ylabel(<span class="string">'Napi&#281;cie [V]'</span>);
+
+        subplot(312)
+        hold <span class="string">on</span>
+        grid <span class="string">on</span>
+        plot(dltpipi.time,dltpipi.signals.values(:,1))
+        xlim([0 3]);
+        plot(Imax.time,Imax.signals.values(:,1),<span class="string">'--r'</span>);
+        title(<span class="string">'Pr&#261;d silnika'</span>);
+        xlabel(<span class="string">'Czas [s]'</span>);
+        ylabel(<span class="string">'Pr&#261;d [A]'</span>);
+
+        subplot(313)
+        hold <span class="string">on</span>
+        grid <span class="string">on</span>
+        plot(domegapipi.time,domegapipi.signals.values(:,1))
+        xlim([0 3]);
+        title(<span class="string">'Pulsacja silnika'</span>);
+        xlabel(<span class="string">'Czas [s]'</span>);
+        ylabel(<span class="string">'Pulsacja [rad/s]'</span>);
+    <span class="keyword">end</span>;
+<span class="keyword">end</span>;
+regpred = 1;
+Top = 0;
+<span class="comment">% %%</span>
+<span class="comment">% %%</span>
+<span class="comment">% %%%Legenda do figure</span>
+<span class="comment">% %%</span>
+<span class="comment">% %figure(1) - Odpowiedzi modelu GIU w postaci transmitancji na skok impilsowy</span>
+<span class="comment">% %figure(2) - Odpowiedzi modelu GIU pochodna w postaci transmitancji na skok impilsowy</span>
+<span class="comment">% %figure(3) - Odpowiedzi modelu GomegaM w postaci transmitancji na skok impilsowy</span>
+<span class="comment">% %figure(4) - Odpowiedzi modelu GomegaU w postaci transmitancji na skok impilsowy</span>
+<span class="comment">% %figure(5) - Odpowiedzi modelu GIM w postaci transmitancji na skok impilsowy</span>
+<span class="comment">% %figure(6) - Uk&#322;ad analogowy - regulator PI - brak momentu obci&#261;zenia</span>
+<span class="comment">% %figure(7) - Uk&#322;ad analogowy - regulator PI - moment obci&#261;zenia</span>
+<span class="comment">% %figure(8) - Uk&#322;ad analogowy - regulator PI - moment obci&#261;zenia w 5s</span>
+<span class="comment">% %figure(9) - Uk&#322;ad analogowy - regulator P - brak momentu obci&#261;zenia</span>
+<span class="comment">% %figure(10) - Uk&#322;ad analogowy - regulator P - moment obci&#261;zenia</span>
+<span class="comment">% %figure(11) - Uk&#322;ad analogowy - regulator P - moment obci&#261;zenia w 5s</span>
+<span class="comment">% %%figure(12) - Przekszta&#322;tnik tyrostorowy - charakterystyki dla Gz</span>
+<span class="comment">% %figure(12) - margine G0</span>
+<span class="comment">% %figure(13) - Przekszta&#322;tnik tyrostorowy - charakterystyki dla G0</span>
+<span class="comment">% %figure(14) - Uk&#322;ad cyfrowy - por&oacute;wnanie przebieg&oacute;w dla r&oacute;&#380;nych czas&oacute;w Tp</span>
+<span class="comment">% %figure(15) - Uk&#322;ad cyfrowy - regulator PI - brak momentu obci&#261;zenia</span>
+<span class="comment">% %figure(16) - Uk&#322;ad cyfrowy - regulator PI - moment obci&#261;zenia</span>
+<span class="comment">% %figure(17) - Uk&#322;ad cyfrowy - regulator PI - moment obci&#261;zenia w 5s</span>
+<span class="comment">% %figure(18) - Uk&#322;ad cyfrowy - regulator P - brak momentu obci&#261;zenia</span>
+<span class="comment">% %figure(19) - Uk&#322;ad cyfrowy - regulator P - moment obci&#261;zenia</span>
+<span class="comment">% %figure(20) - Uk&#322;ad cyfrowy - regulator P - moment obci&#261;zenia w 5s</span>
+</pre><pre class="codeoutput">Warning: Input port 1 of '&lt;a href="matlab:open_and_hilite_hyperlink
+('Projekt_KUS_cyfro_sim/Quantizer','error')"&gt;Projekt_KUS_cyfro_sim/Quantizer&lt;/a&gt;'
+is not connected. 
+Warning: Output port 1 of '&lt;a href="matlab:open_and_hilite_hyperlink
+('Projekt_KUS_cyfro_sim/Quantizer','error')"&gt;Projekt_KUS_cyfro_sim/Quantizer&lt;/a&gt;'
+is not connected. 
+Warning: Input port 1 of '&lt;a href="matlab:open_and_hilite_hyperlink
+('Projekt_KUS_cyfro_sim/Quantizer1','error')"&gt;Projekt_KUS_cyfro_sim/Quantizer1&lt;/a&gt;'
+is not connected. 
+Warning: Output port 1 of '&lt;a href="matlab:open_and_hilite_hyperlink
+('Projekt_KUS_cyfro_sim/Quantizer1','error')"&gt;Projekt_KUS_cyfro_sim/Quantizer1&lt;/a&gt;'
+is not connected. 
+Warning: Input port 1 of '&lt;a href="matlab:open_and_hilite_hyperlink
+('Projekt_KUS_cyfro_sim/Quantizer2','error')"&gt;Projekt_KUS_cyfro_sim/Quantizer2&lt;/a&gt;'
+is not connected. 
+Warning: Output port 1 of '&lt;a href="matlab:open_and_hilite_hyperlink
+('Projekt_KUS_cyfro_sim/Quantizer2','error')"&gt;Projekt_KUS_cyfro_sim/Quantizer2&lt;/a&gt;'
+is not connected. 
+Warning: Input port 1 of '&lt;a href="matlab:open_and_hilite_hyperlink
+('Projekt_KUS_cyfro_sim/Quantizer','error')"&gt;Projekt_KUS_cyfro_sim/Quantizer&lt;/a&gt;'
+is not connected. 
+Warning: Output port 1 of '&lt;a href="matlab:open_and_hilite_hyperlink
+('Projekt_KUS_cyfro_sim/Quantizer','error')"&gt;Projekt_KUS_cyfro_sim/Quantizer&lt;/a&gt;'
+is not connected. 
+Warning: Input port 1 of '&lt;a href="matlab:open_and_hilite_hyperlink
+('Projekt_KUS_cyfro_sim/Quantizer1','error')"&gt;Projekt_KUS_cyfro_sim/Quantizer1&lt;/a&gt;'
+is not connected. 
+Warning: Output port 1 of '&lt;a href="matlab:open_and_hilite_hyperlink
+('Projekt_KUS_cyfro_sim/Quantizer1','error')"&gt;Projekt_KUS_cyfro_sim/Quantizer1&lt;/a&gt;'
+is not connected. 
+Warning: Input port 1 of '&lt;a href="matlab:open_and_hilite_hyperlink
+('Projekt_KUS_cyfro_sim/Quantizer2','error')"&gt;Projekt_KUS_cyfro_sim/Quantizer2&lt;/a&gt;'
+is not connected. 
+Warning: Output port 1 of '&lt;a href="matlab:open_and_hilite_hyperlink
+('Projekt_KUS_cyfro_sim/Quantizer2','error')"&gt;Projekt_KUS_cyfro_sim/Quantizer2&lt;/a&gt;'
+is not connected. 
+Warning: Input port 1 of '&lt;a href="matlab:open_and_hilite_hyperlink
+('Projekt_KUS_cyfro_sim/Quantizer','error')"&gt;Projekt_KUS_cyfro_sim/Quantizer&lt;/a&gt;'
+is not connected. 
+Warning: Output port 1 of '&lt;a href="matlab:open_and_hilite_hyperlink
+('Projekt_KUS_cyfro_sim/Quantizer','error')"&gt;Projekt_KUS_cyfro_sim/Quantizer&lt;/a&gt;'
+is not connected. 
+Warning: Input port 1 of '&lt;a href="matlab:open_and_hilite_hyperlink
+('Projekt_KUS_cyfro_sim/Quantizer1','error')"&gt;Projekt_KUS_cyfro_sim/Quantizer1&lt;/a&gt;'
+is not connected. 
+Warning: Output port 1 of '&lt;a href="matlab:open_and_hilite_hyperlink
+('Projekt_KUS_cyfro_sim/Quantizer1','error')"&gt;Projekt_KUS_cyfro_sim/Quantizer1&lt;/a&gt;'
+is not connected. 
+Warning: Input port 1 of '&lt;a href="matlab:open_and_hilite_hyperlink
+('Projekt_KUS_cyfro_sim/Quantizer2','error')"&gt;Projekt_KUS_cyfro_sim/Quantizer2&lt;/a&gt;'
+is not connected. 
+Warning: Output port 1 of '&lt;a href="matlab:open_and_hilite_hyperlink
+('Projekt_KUS_cyfro_sim/Quantizer2','error')"&gt;Projekt_KUS_cyfro_sim/Quantizer2&lt;/a&gt;'
+is not connected. 
+</pre><img vspace="5" hspace="5" src="KUS_Projekt_19.png" style="width:560px;height:420px;" alt=""> <img vspace="5" hspace="5" src="KUS_Projekt_20.png" style="width:560px;height:420px;" alt=""> <img vspace="5" hspace="5" src="KUS_Projekt_21.png" style="width:560px;height:420px;" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Komputerowe układy sterowania
+% Projekt 2018  
+% Autorzy: Tomasz Kielar, Tomasz Telesz  
+% EAIiIB Elektrotechnika rok III
+
+%%
+%%
+%%% 1. Czyszczenie przestrzeni roboczej
+ clc, clear all, close all
+%%
+%%
+%%% 2. Dane
+%%% 2. Dane
+Pn = 54000;  %moc znamionowa [W]
+Un = 440;   %napięcie znamionowe [V]
+In = 130.7;    %prąd znamionowy [A]
+Nn = 1450;  %prędkość znamionowa [obr/min]
+R = 0.254;  %rezystancja twornika [Ohm]
+L = 1.63*10^-3;   %indukcujnosc twornika [H]
+Js = 0.97*15;  %moment bezwladnosci [kg*m^2]
+%%
+%%
+%%% 3. Przełącznia układu
+regpred = 1;        %1 - regulator PI, 0 - reg P
+przelacz3 = 0;      %1 - załącza moment obciążenia
+delomega = 0;       %1 - deltaomega 2%, 0 - 5%
+
+%%
+%%
+%%% 4. Sprawdzenie warunków
+fn = Nn/60;     %częstotliwość znamionowa
+omegan = 2*pi*fn;   %pulsacja znamionowa
+lambdan = 2;
+p = 50;
+T = L/R;    %elektromagnetyczna stała czasowa
+J = 6*Js;   %zastępszy moment bezwładności
+psien = (Un-R*In)/omegan;   %znamionowy strumień
+B = J*R/psien^2;    %elektromechaniczna stała czasowa
+%%
+%%
+%%% 5. Obliczenia
+tau0 = 3.3e-3;  %[s] stała czasowa przekształtnika tyrystorowego
+Kp = 1.5*Un/10;    %wzmocnienie wzmacniacza mocy
+Y = 7.8/(2.5*In);     %zmienione z 10 na 7.8, bo nie spełniało warunku z Uz0
+Kt = 10/(1.2*omegan);   %wzmocnienie
+Mn = psien*In;  %znamionowy moment obciążenia
+Top = 0;  %opóźnienie załączanie znamionowego momentu obciążenia
+if (delomega == 0)
+    deltaomega = 0.05*omegan;   %statyzm regulacji
+else
+    deltaomega = 0.02*omegan;
+end;
+beta = lambdan/p;   %stała czasowa przebiegu prądu twornika
+T1 = 0.5*B*(1-sqrt(1-4*T/B));
+B1 = B-T1;
+kz = (B1-beta)/(Y*B1);  %zastępczy współczynnik wzmocnienia
+if (B > 4*T)
+    m = T1;                         %parametry regulatora
+    V = beta*Y*Kp*B/((B1-beta)*R);  %
+else
+    m = sqrt(B*T);
+    V = Kp*Y/R*B*beta/(sqrt(B*T)-beta);
+end
+Uz0 = lambdan*In*Y*B1/(B1-beta);    %ograniczenie Uz0 < 10V
+
+TR = 4*beta;  %parametr wg kryterium symetrycznego
+if (regpred == 0)
+    Kw = Mn/(psien*kz*Kt*deltaomega);    %regulator P
+else
+    Kw = J/(2*Kt*kz*beta*psien);    %regulator PI
+end;
+time = linspace(0,1,2);
+Imax = In*lambdan+0*time;
+%%
+%%
+%%% 6. Odpowiedzi modelów w postaci transmitancji na skok impilsow
+sim('Projekt_KUS_sim');
+figure()
+grid on
+hold on
+title('GIU');
+xlabel('Czas [s]');
+ylabel('Prąd [I]');
+ylim([0 1800]);
+plot(GUI_imp.time,GUI_imp.signals.values(:,1));
+plot(time,Imax,'r');
+
+figure()
+grid on
+hold on
+title('GIU pochodna');
+xlabel('Czas [s]');
+ylabel('Pochodna prądu [I/s]');
+ylim([-0.5, 28.e4]);
+plot(GUI_der_imp.time,GUI_der_imp.signals.values(:,1));
+
+figure()
+grid on
+hold on
+%title('GomegaM');
+xlabel('Czas [s]');
+ylabel('Pulsacja [rad/s]');
+ylim([0 4]);
+plot(GomegaM_imp.time,GomegaM_imp.signals.values(:,1));
+
+figure()
+grid on
+hold on
+%title('GomegaU');
+xlabel('Czas [s]');
+ylabel('Pulsacja [rad/s]');
+ylim([0 60]);
+plot(GomegaU_imp.time,GomegaU_imp.signals.values(:,1));
+
+figure()
+grid on
+hold on
+title('GIM');
+xlabel('Czas [s]');
+ylabel('Prąd [I]');
+ylim([0 40]);
+plot(GIM_imp.time,GIM_imp.signals.values(:,1));
+plot(time,Imax,'r');
+
+%%
+%%
+%%% 7. Rysowanie przebiegów symulacyjnych - układ analogowy
+for x = 1:2
+    for p = 1:3
+        if(x == 1)
+            regpred = 1;    %regulator PI
+        elseif(x == 2)
+            regpred = 0;    %regulator P
+        end;
+        if(p == 1)
+            przelacz3 = 0;   %wyłącza moment obciążenia
+        elseif(p == 2)
+            przelacz3 = 1;  %załącza moment obciążenia
+        elseif (p == 3)
+            Top = 5;    %opóźnie załączenie momentu (załączenie udarowe)
+        end;
+        sim('projekt');
+
+        figure()
+        subplot(311)
+        grid on
+        hold on
+        title('Napięcie silnika');
+        xlabel('Czas [s]');
+        ylabel('Napięcie [V]');
+        plot(Us.time,Us.signals.values(:,1));
+        xlim([0 3]);
+
+        subplot(312)
+        grid on
+        hold on
+        title('Prąd silnika');
+        xlabel('Czas [s]');
+        ylabel('Prąd [A]');
+        plot(Is.time,Is.signals.values(:,1));
+        plot(Imax.time,Imax.signals.values(:,1),'r');
+        xlim([0 3]);
+
+        subplot(313)
+        grid on
+        hold on
+        title('Pulsacja silnika');
+        xlabel('Czas [s]');
+        ylabel('Pulsacja [rad/s]');
+        plot(omega.time,omega.signals.values(:,1));
+        xlim([0 3]);
+
+    end;
+end;
+%%
+%%
+%%% 8. Przekształtnik tyrystrowy
+
+KR=m/V;
+tau0=3.3*10^(-3);
+reg_pred=tf([KR*TR KR], [TR 0]);        %regulacja predkosci
+reg_mom=tf([m 1], [V 0]);               %regulacja momentu
+przeksztyr=tf([Kp], [tau0 1]);          %przeksztaltnik tyrystorowy
+silnik=tf([B 0], [R*B1*T1 R*(B1+T1) R]);    %moment silnika
+bezwl=tf([1],[J 0]);                    %bezwladnosc
+
+sys=series(reg_mom,przeksztyr); 
+sys=series(sys,silnik);
+
+sys=feedback(sys,Y);
+
+sys=series(psien,sys);
+sys=series(reg_pred,sys);
+sys=series(sys,bezwl);
+
+figure
+bode(sys)
+grid on;
+
+P = nyquistoptions;
+P.ShowFullContour = 'off'; 
+
+figure
+nyquist(sys, P)
+grid on
+
+figure
+margin(sys)
+
+% op=Pm*(pi/180)/Wpm;
+
+Gp = tf(Kp,[tau0 1]);
+Gi = tf(m+1, V);
+Gs = tf(B/R,[B1 1]);
+G1 = Kt*tf([TR 1],[TR 0]);
+Gj = tf(1,[J 1]);
+
+Gz = Gi*Gp*Gs/((1+Gi*Gp*Gs)*Y);
+G0 = G1*Gz*psien*Gj;
+
+figure()
+margin(G0);
+
+%Charakterystyki
+figure()   %dla Gz
+subplot(211)
+title('Charakterystyki dla Gz');
+hold on
+bode(Gz);
+grid on
+P = nyquistoptions;
+P.ShowFullContour = 'off'; 
+subplot(212)
+nyquist(Gz, P);
+figure()   %dla G0
+subplot(211)
+title('Charakterystyki dla G0');
+hold on
+bode(G0);
+grid on
+subplot(212)
+nyquist(G0, P);
+% 
+%%
+%%
+%%% 9. Dyskretny regulator prędkości/prądu
+
+N = 10; %liczba próbek
+Tp = beta/N;    %krok próbkowania
+K1 = Kw;    %wzmocnienia regulatora prędkości
+K2 = Kw*(1-(Tp/TR));
+
+K1I = m/V;  %wzmocnienia regulatora prądu
+K2I = (Tp-m)/V;
+
+deltaI = psien*V*Mn/(psien^2*V+J*Kp*Y);
+%%
+%%
+%%% 10. Porównanie przebiegów dla prawidłowo dobranego czasu próbkowania i zbyt dużego
+
+figure()
+for x = 1:2
+    if(x == 2)
+        Tp = 4*Tp;
+    end;
+    sim('Projekt_KUS_cyfro_sim');
+    subplot(311)
+    hold on
+    grid on
+    if(x == 1)
+        plot(us.time,us.signals.values(:,1),'b')
+        xlim([0 6]);
+    elseif (x == 2)
+        plot(us.time,us.signals.values(:,1),'k')
+        xlim([0 6]);
+    end;
+    title('Napięcie silnika');
+    xlabel('Czas [s]');
+    ylabel('Napięcie [V]');
+    if(x == 2)
+        legend('Prawidłowo dobrany','Nieprawidłowo dobrany (za duży)');
+    end;
+
+    subplot(312)
+    hold on
+    grid on
+    if(x == 1)
+        plot(dltpipi.time,dltpipi.signals.values(:,1),'b')
+        xlim([0 7]);
+    elseif (x == 2)
+        plot(dltpipi.time,dltpipi.signals.values(:,1),'k')
+        xlim([0 7]);
+    end;
+    plot(Imax.time,Imax.signals.values(:,1),'r');
+    title('Prąd silnika');
+    xlabel('Czas [s]');
+    ylabel('Prąd [A]');
+    if(x == 2)
+        legend('Prawidłowo dobrany','Nieprawidłowo dobrany (za duży)');
+    end;
+
+    subplot(313)
+    hold on
+    grid on
+    if(x == 1)
+        plot(domegapipi.time,domegapipi.signals.values(:,1),'b')
+        xlim([0 6]);
+    elseif (x == 2)
+        plot(domegapipi.time,domegapipi.signals.values(:,1),'k')
+        xlim([0 6]);
+    end;
+    title('Pulsacja silnika');
+    xlabel('Czas [s]');
+    ylabel('Pulsacja [rad/s]');
+    if(x == 2)
+         legend('Prawidłowo dobrany','Nieprawidłowo dobrany (za duży)');
+    end;
+end;
+
+%%
+%%
+%%% 11. Rysowanie przebiegów symulacyjnych - układ cyfrowy
+Tp = beta/N;
+for x = 1:1
+    for p = 1:3
+        if(x == 1)
+            regpred = 1;    %regulator PI
+        elseif(x == 2)
+            regpred = 0;    %regulator P
+        end;
+        Top = 0;
+        if(p == 1)
+            przelacz3 = 0;   %wyłącza moment obciążenia
+        elseif(p == 2)
+            przelacz3 = 1;  %załącza moment obciążenia
+        elseif (p == 3)
+            Top = 2;    %opóźnie załączenie momentu (załączenie udarowe)
+        end;
+        sim('Projekt_KUS_cyfro_sim');
+    
+        figure()
+        subplot(311)
+        hold on
+        grid on
+        plot(us.time,us.signals.values(:,1))
+        xlim([0 3]);
+        title('Napięcie silnika');
+        xlabel('Czas [s]');
+        ylabel('Napięcie [V]');
+
+        subplot(312)
+        hold on
+        grid on
+        plot(dltpipi.time,dltpipi.signals.values(:,1))
+        xlim([0 3]);
+        plot(Imax.time,Imax.signals.values(:,1),'REPLACE_WITH_DASH_DASHr');
+        title('Prąd silnika');
+        xlabel('Czas [s]');
+        ylabel('Prąd [A]');
+
+        subplot(313)
+        hold on
+        grid on
+        plot(domegapipi.time,domegapipi.signals.values(:,1))
+        xlim([0 3]);
+        title('Pulsacja silnika');
+        xlabel('Czas [s]');
+        ylabel('Pulsacja [rad/s]');
+    end;
+end;
+regpred = 1;
+Top = 0;
+% %%
+% %%
+% %%%Legenda do figure
+% %%
+% %figure(1) - Odpowiedzi modelu GIU w postaci transmitancji na skok impilsowy
+% %figure(2) - Odpowiedzi modelu GIU pochodna w postaci transmitancji na skok impilsowy
+% %figure(3) - Odpowiedzi modelu GomegaM w postaci transmitancji na skok impilsowy
+% %figure(4) - Odpowiedzi modelu GomegaU w postaci transmitancji na skok impilsowy
+% %figure(5) - Odpowiedzi modelu GIM w postaci transmitancji na skok impilsowy
+% %figure(6) - Układ analogowy - regulator PI - brak momentu obciązenia
+% %figure(7) - Układ analogowy - regulator PI - moment obciązenia
+% %figure(8) - Układ analogowy - regulator PI - moment obciązenia w 5s
+% %figure(9) - Układ analogowy - regulator P - brak momentu obciązenia
+% %figure(10) - Układ analogowy - regulator P - moment obciązenia
+% %figure(11) - Układ analogowy - regulator P - moment obciązenia w 5s
+% %%figure(12) - Przekształtnik tyrostorowy - charakterystyki dla Gz
+% %figure(12) - margine G0
+% %figure(13) - Przekształtnik tyrostorowy - charakterystyki dla G0
+% %figure(14) - Układ cyfrowy - porównanie przebiegów dla różnych czasów Tp
+% %figure(15) - Układ cyfrowy - regulator PI - brak momentu obciązenia
+% %figure(16) - Układ cyfrowy - regulator PI - moment obciązenia
+% %figure(17) - Układ cyfrowy - regulator PI - moment obciązenia w 5s
+% %figure(18) - Układ cyfrowy - regulator P - brak momentu obciązenia
+% %figure(19) - Układ cyfrowy - regulator P - moment obciązenia
+% %figure(20) - Układ cyfrowy - regulator P - moment obciązenia w 5s
+
+##### SOURCE END #####
+--></body></html>

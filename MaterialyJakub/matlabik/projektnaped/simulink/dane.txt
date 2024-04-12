@@ -1,0 +1,36 @@
+clear all; close all
+%% Dane wejś›ciowe
+Pn = 17e3; % Moc znamionowa
+Un = 220;  % Znamionowe napiecie zasilania
+In = 88;   % Prad znamionowy
+nn = 1500; % Znamionowa predkosc obrotowa
+Rt = 0.15; % Rezystancja uogolniona
+Lt=0.01875; % Indukcyjnosc
+Js = 0.275; % Moment bezwladnosci wirnika
+
+L = Lt; % Indukcyjnosc calkowita
+R = Rt; % Rezystancja uogolniona
+J = 22*Js; % Moment bezwladnosci silnika i agregatu
+
+wn = 2*pi*nn/60;
+
+lambda_n = 2; % Stala ograniczajaca prad
+p = 50; % Dopuszczalna krotnosc pradu
+Beta = lambda_n/p; % Stala czasowa przebiegu pradu twornika
+
+psi_e = (Un-In*R)/wn; % znamionowy strumieďż˝ skojarzony rotacyjnie z uzwojeniem tworika
+
+B = J*R/(psi_e^2); % stała elektromechaniczna napędu
+T = L/R; % elektromagnetyczna staďż˝a czasowa
+Tm = 0; % stała czasowa obwodu wzbudzenia
+Id= lambda_n*In; % dopuszczalny prąd twornika
+Mn=psi_e*In;  % Moment znamionowy
+Mm=Mn; % Moment mechaniczny
+
+
+%Sprawdzanie warunku B > 4T
+if B > 4*T
+    disp('Ok')
+else
+    disp('Zle')
+end
