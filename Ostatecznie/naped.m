@@ -1,38 +1,30 @@
 %dane:
 close all, clear all, clc
 %nasze dane
-Pn=3;
-Un=110;
-In=34.9;
-nn=600;
-R1=0.346;
-L1=23.64*10^(-3);
-Js=0.0975;
+Pn=17;
+Un=230;
+In=85;
+nn=700;
+R1=0.253;
+L1=1.9*10^(-3);
+Js=0.75;
 
 %wyliczenie parametrów:
 
 wn=(2*pi*nn)/60;
 psie=(Un-R1*In)/wn;
-
 J=Js*4;
 B=J*(R1/psie^2);
-
 T=L1/R1;
-
 Mn=In*psie;
 
 %przyjêto:
 
-lambdan=2;
-
+lambdan=1.8;
 p=50;
-
 Y=10/(2.5*In);
-
 KT=10/(1.2*wn);
-
 Kp=(1.5*Un)/10;
-
 
 %za³ozenia zmiennych stanu:
 
