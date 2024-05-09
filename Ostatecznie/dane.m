@@ -69,6 +69,7 @@ legend('prąd twornika','Ograniczenie prądu twornika')
 figure
 plot(t,odpdI,t,dIdtmax.*ones(1,length(t)));
 title('odpowiedź skokowa pochodnej prądu twornika');
+xlim([0 0.2])
 xlabel('t [s]');ylabel('I[A]');
 legend('pochodna prądu twornika','Ograniczenie pochodnej prądu twornika')
 grid on
