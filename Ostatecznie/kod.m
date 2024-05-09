@@ -47,7 +47,6 @@ m = T1;
 V = K_P*Y*B*beta/(R_t*(B1-beta));
 u_z0 = lambda_N*I_N*Y*B1/(B1-beta); %ograniczenie
 
-G_RI_s = tf([m 1],[V 0]);
 
 %parametry uzyskane wg kryterium symetrycznego
 
@@ -58,7 +57,8 @@ G_F_s = tf([1],[Tr 1]);
 
 % transmitancje (AUX)
 GRw=K_w*tf([Tr,1],[Tr 0]);
-GRI=tf([m 1],[V 0]);
+G_RI_s = tf([m 1],[V 0]);
+
 %Moment obciążenia
 MN=P_N/w_N;
 
