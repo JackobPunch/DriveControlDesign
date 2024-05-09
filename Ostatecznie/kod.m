@@ -37,26 +37,58 @@ G_wM_s = tf([R_t*T/psi_e^2 R_t/psi_e^2],[B*T B 1]);
 G_IU_s = tf([B/R_t 0],[B*T B 1]);
 G_IM_s = tf([1/psi_e],[B*T B 1]);
 
-%%% TUTAJ TRZEBA NARUCHAĆ WYKRESÓW NA ODPOWIEDZIE SKOKOWE %%%
-
-% Nastawy regulatora prądu 
+%% Nastawy regulatora prądu 
 
 T1 = 0.5*B*(1-sqrt(1-4*T/B));
 B1 = B - T1;
 beta = lambda_N/p;
-K_z = (B1-beta)/(Y*B1);
+K_z = (B1-beta)/(Y*B1); %zastępczy współczynnik wzmocnienia
 m = T1;
 V = K_P*Y*B*beta/(R_t*(B1-beta));
-u_z0 = lambda_N*I_N*Y*B1/(B1-beta);
+u_z0 = lambda_N*I_N*Y*B1/(B1-beta); %ograniczenie
 
 G_RI_s = tf([m 1],[V 0]);
 
-% Nastawy regulatora prędkości P
+%parametry uzyskane wg kryterium symetrycznego
 
 K_w = J/(2*beta*psi_e*K_T*K_z);
 Tr = 4*beta;
 
 G_F_s = tf([1],[Tr 1]);
 
-%%% TAK W ZASADZIE TO WSZYSTKO CO JEST DO LICZENIA. TRZEBA ZROBIĆ MODEL W
-%%% SIMULINKU I DAĆ WYKRESY NA ODPOWIEDŹ SKOKOWĄ.
+% transmitancje (AUX)
+GRw=K_w*tf([Tr,1],[Tr 0]);
+GRI=tf([m 1],[V 0]);
+%Moment obciążenia
+MN=P_N/w_N;
+
+sim('projekt.slx')
+
+%prędkość
+figure
+plot(GwU.time, GwU.signals.values)
+title('Odpowiedz skokowa transmitancji G_{wU}')
+xlabel('t[s]')
+ylabel('w(t) [rad/s]')
+
+%prąd
+figure
+plot(GIU.time, GIU.signals.values)
+hold on
+plot(GIU.time,ones(1,length(GIU.time)).*I_N*lambda_N,'r-')
+hold on
+title('Odpowiedz skokowa transmitancji G_{IU}')
+hold on
+xlabel('t[s]')
+ylabel('I_t(t) [A]')
+
+%pochodna prądu
+figure
+plot(GdIU.time, GdIU.signals.values)
+hold on
+plot(GdIU.time,ones(1,length(GdIU.time)).*I_N*p,'r-')
+hold on
+title('Odpowiedz skokowa transmitancji G_{dIU}')
+hold on
+xlabel('t[s]')
+ylabel('dI_t/dt [A]')
