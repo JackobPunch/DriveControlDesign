@@ -8,6 +8,7 @@ In=85; % [A]
 Js=0.75; % [kgm2]
 Rt=0.253; % [Ohm]
 Lt=1.9*10^(-3); % [H]
+
 %% obliczone parametry 
 w_n=nn*2*pi/60;
 psi_en=(Un-Rt*In)/w_n; % [Wb]
