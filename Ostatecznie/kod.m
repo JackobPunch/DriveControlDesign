@@ -33,11 +33,12 @@ K_P = (1.5*U_N)/10; % [V]
     J_max = (4*T*psi_e^2)/R_t; %maksymalna wartość J (czy jest sens?? bez tego i tak działa warunek dla 11 J_s)
 
 G_wU_s = tf([1/psi_e],[B*T B 1]);
-G_wM_s = tf([R_t*T/psi_e^2 R_t/psi_e^2],[B*T B 1]);
+%G_wM_s = tf([R_t*T/psi_e^2 R_t/psi_e^2],[B*T B 1]);
 G_IU_s = tf([B/R_t 0],[B*T B 1]);
-G_IM_s = tf([1/psi_e],[B*T B 1]);
+G_dIU_s = tf([B/R_t 0 0],[B*T B 1]);
+%G_IM_s = tf([1/psi_e],[B*T B 1]);
 
-%% Nastawy regulatora prądu 
+%% Nastawy regulatora prądu (9)/str.8
 
 T1 = 0.5*B*(1-sqrt(1-4*T/B));
 B1 = B - T1;
@@ -62,7 +63,8 @@ G_RI_s = tf([m 1],[V 0]);
 %Moment obciążenia
 MN=P_N/w_N;
 
-sim('projekt.slx')
+%% wykresy simulink
+sim('projekt_nasz.slx')
 
 %prędkość
 figure
@@ -92,3 +94,27 @@ title('Odpowiedz skokowa transmitancji G_{dIU}')
 hold on
 xlabel('t[s]')
 ylabel('dI_t/dt [A]')
+
+%% wykresy mplik
+t=linspace(0,2,1000);
+odpI=step(G_IU_s,t);odpI=U_N*odpI;
+odpdI=step(G_dIU_s,t); odpdI=U_N*odpdI;
+odpw=step(G_wU_s,t); odpw=U_N*odpw;
+figure
+plot(t,odpI,t,I_max.*ones(1,length(t)));
+title('odpowiedź skokowa prądu twornika');
+xlabel('t [s]');ylabel('I[A]');
+legend('prąd twornika','Ograniczenie prądu twornika')
+ grid on
+figure
+plot(t,odpdI,t,dI_max.*ones(1,length(t)));
+title('odpowiedź skokowa pochodnej prądu twornika');
+xlabel('t [s]');ylabel('I[A]');
+legend('pochodna prądu twornika','Ograniczenie pochodnej prądu twornika')
+grid on
+figure
+plot(t,odpw,t,w_max.*ones(1,length(t)));
+title('odpowiedź skokowa prędkości obrotowej');
+xlabel('t [s]');ylabel('\omega [rad/s]');
+legend('prędkość obrotowa','znamionowa prędkość obrotowa')
+grid on
