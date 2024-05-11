@@ -11,7 +11,7 @@ Js=0.97;
 %obliczenia tych ograniczeń i innych
 lambdaN=1.8;
 p=50;
-Y=10/(5*IN); %tal dobieramy ten mnożnik przed IN, aby uz0<10
+Y=10/(5*IN); %tak dobieramy ten mnożnik przed IN, aby uz0<10
 KT=10/(1.2*wN);
 Kp=1.5*UN/10;
 
