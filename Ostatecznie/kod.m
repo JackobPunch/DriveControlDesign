@@ -33,10 +33,10 @@ K_P = (1.5*U_N)/10; % [V]
     J_max = (4*T*psi_e^2)/R_t; %maksymalna wartość J (czy jest sens?? bez tego i tak działa warunek dla 11 J_s)
 
 G_wU_s = tf([1/psi_e],[B*T B 1]);
-G_wM_s = tf([R_t*T/psi_e^2 R_t/psi_e^2],[B*T B 1]);
+%G_wM_s = tf([R_t*T/psi_e^2 R_t/psi_e^2],[B*T B 1]);
 G_IU_s = tf([B/R_t 0],[B*T B 1]);
 G_dIU_s = tf([B/R_t 0 0],[B*T B 1]);
-G_IM_s = tf([1/psi_e],[B*T B 1]);
+%G_IM_s = tf([1/psi_e],[B*T B 1]);
 
 %% Nastawy regulatora prądu (9)/str.8
 
