@@ -60,15 +60,15 @@ G_F_s = tf([1],[Tr 1]);
 GRw=K_w*tf([Tr,1],[Tr 0]);
 G_RI_s = tf([m 1],[V 0]);
 
-%Moment obciążenia
-MN=P_N/w_N;
-
 %% wykresy simulink
-sim('projekt_nasz.slx')
+sim('projekt_n.slx')
 
 %prędkość
 figure
 plot(GwU.time, GwU.signals.values)
+hold on
+plot(GwU.time,ones(1,length(GwU.time)).*w_max,'r-')
+hold on
 title('Odpowiedz skokowa transmitancji G_{wU}')
 xlabel('t[s]')
 ylabel('w(t) [rad/s]')
@@ -104,17 +104,17 @@ figure
 plot(t,odpI,t,I_max.*ones(1,length(t)));
 title('odpowiedź skokowa prądu twornika');
 xlabel('t [s]');ylabel('I[A]');
-legend('prąd twornika','Ograniczenie prądu twornika')
+legend('prąd twornika','Ograniczenie prądu twornika', 'Location', 'best')
  grid on
 figure
 plot(t,odpdI,t,dI_max.*ones(1,length(t)));
 title('odpowiedź skokowa pochodnej prądu twornika');
 xlabel('t [s]');ylabel('I[A]');
-legend('pochodna prądu twornika','Ograniczenie pochodnej prądu twornika')
+legend('pochodna prądu twornika','Ograniczenie pochodnej prądu twornika', 'Location', 'best')
 grid on
 figure
 plot(t,odpw,t,w_max.*ones(1,length(t)));
 title('odpowiedź skokowa prędkości obrotowej');
 xlabel('t [s]');ylabel('\omega [rad/s]');
-legend('prędkość obrotowa','znamionowa prędkość obrotowa')
+legend('prędkość obrotowa','znamionowa prędkość obrotowa', 'Location', 'best')
 grid on
