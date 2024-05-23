@@ -1,4 +1,4 @@
-close all,  clear,  clc;
+close all, clc;
 
 %dane dla silnika nr.14
 P_N = 17000; % [W] 
@@ -9,6 +9,7 @@ w_N = (2*pi*n_N)/60; % [rad/s]
 R_t = 0.253; % [om]
 L_t = 0.0019; % [H]
 J_s = 0.75; % [kgm^2]
+tau = 3.3e-3;
 
 % wyjściowe dane (punkt 4.1 z instrukcji)
 lambda_N = 1.8;
@@ -118,3 +119,34 @@ title('odpowiedź skokowa prędkości obrotowej');
 xlabel('t [s]');ylabel('\omega [rad/s]');
 legend('prędkość obrotowa','znamionowa prędkość obrotowa', 'Location', 'best')
 grid on
+
+%% część do wyznaczenia stabilności układów przy użyciu model linealizer
+
+% ukl_otw = o_Bode;
+% ukl_otw_trans = tf(ukl_otw)
+% ukl_zam = z_Bode;
+% ukl_zam_trans = tf(ukl_zam)
+% 
+% figure()
+% margin(ukl_otw_trans);
+% figure()
+% margin(ukl_zam_trans);
+% 
+% stabilny = isstable(ukl_zam_trans);
+% if stabilny
+%     disp('Układ zamknięty jest stabilny.');
+% else
+%     disp('Układ zamknięty jest niestabilny.');
+% end
+% 
+% stabilny = isstable(ukl_otw_trans);
+% if stabilny
+%     disp('Układ otwarty jest stabilny.');
+% else
+%     disp('Układ otwarty jest niestabilny.');
+% end
+
+% figure;
+% step(ukl_otw_trans);
+% title('Odpowiedź skokowa układu');
+% grid on;
