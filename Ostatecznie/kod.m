@@ -22,7 +22,7 @@ K_P = (1.5*U_N)/10; % [V]
     % niezbędne parametry
     psi_e = (U_N-R_t*I_N)/w_N;  % [Vs]
     T = L_t/R_t;    % [s]
-    J = J_s + J_s;   % [kgm^2]
+    J = J_s + 2*J_s;   % [kgm^2]
     B = J*R_t/(psi_e^2);    %[s]
     M_n = I_N*psi_e;    % [Nm]
     
@@ -145,7 +145,7 @@ grid on
 % else
 %     disp('Układ otwarty jest niestabilny.');
 % end
-
+% 
 % figure;
 % step(ukl_otw_trans);
 % title('Odpowiedź skokowa układu');
